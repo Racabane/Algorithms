@@ -96,7 +96,7 @@ void list::input(std::string in){
 		}
 		switch(commandType){
 			case 'L': 
-				listingLines();
+				listingLines(num1, num2);
 				break;
 			case 'D':
 				deleteLines(num1, num2);
@@ -132,8 +132,21 @@ void list::enterLine(std::string line){
 void list::listingLines(int num1, int num2){
 	int linenum = 1;
 	for(node* tmp = head; tmp != nullptr; tmp = tmp->next){
-		std::cout << linenum << "> " << tmp->line << std::endl;
-		linenum++;
+		if(num1 == -1 || num2 == -1){
+			if(num1 != -1 && num1 != linenum){
+				linenum++;
+				continue;
+			}
+			std::cout << linenum << "> " << tmp->line << std::endl;
+			linenum++;
+		}else{
+			if(num1 != -1 && (num1 > linenum || linenum > num2)){
+				linenum++;
+				continue;
+			}
+			std::cout << linenum << "> " << tmp->line << std::endl;
+			linenum++;
+		}
 	}
 }
 
@@ -204,7 +217,11 @@ void list::appendLines(){
 
 void list::insertLines(int num1){
 	std::string line;
-	std::cout << num1 << "> ";
+	if(num1 == -1){
+		std::cout << current - 1 << "> ";
+	}else{
+		std::cout << num1 << "> ";
+	}
 	std::getline(std::cin, line);
 	if(line[0] == 'E' || line[0] == 'A' || line[0] == 'I' || line[0] == 'L' || line[0] == 'D' ){
 		input(line);
@@ -220,7 +237,7 @@ void list::insertLines(int num1){
 					newline->next = tmp;
 					tail = newline;
 					current++;
-					insertLines(current);
+					insertLines(num1);
 					break;
 				}
 				i++;
