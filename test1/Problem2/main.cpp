@@ -83,21 +83,18 @@ int moveToFront(list &l, long x){
 	if(l.head == nullptr){
 		l.insert(x);
 	}
-	node* before = l.head;
+
 	//checks each element making comparisons each element in order to find
 	//element thats being accessed then moves element to front of list
 	for(node* tmp = l.head; tmp->next != nullptr; tmp = tmp->next){
-		node* k = tmp->next;
 		count++;
 		//suppose to move accessed element to the front
-		if(tmp->info == x){
-			tmp->next = l.head;
-			l.head = tmp;
-			before = k;
+		if(tmp->next->info == x){
+			node* target = tmp->next;
+			tmp->next = tmp->next->next;
+			target->next = l.head;
+			l.head = target;
 			return count;
-		}
-		if(tmp != l.head){
-			before = before->next;
 		}
 	}
 	//not found in list add new node
@@ -114,7 +111,7 @@ int main(){
 
 	srand(time(0));
 	for(int i = 0; i < 30; i++){
-		long x = rand() % 100000;
+		long x = rand() % 30;
 		//if desired element is not in list make new node or access it and reorder based 
 		//on method
 		totalComparisons1 += transpose(list1, x);
