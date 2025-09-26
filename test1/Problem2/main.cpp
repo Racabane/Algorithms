@@ -90,6 +90,7 @@ int moveToFront(list &l, long x){
 		count++;
 		//suppose to move accessed element to the front
 		if(tmp->next->info == x){
+			count++;
 			node* target = tmp->next;
 			tmp->next = tmp->next->next;
 			target->next = l.head;
